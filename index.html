@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #img {
+            width: 60%;
+        }
+    </style>
+    <title>压缩图片</title>
+</head>
+
+<body>
+    <div>
+        <img src="" alt="" id="img">
+        <!-- <canvas id="canvas"></canvas> -->
+        <div id="canvas"></div>
+        <input type="file" name="" id="input">
+    </div>
+
+    <script>
+        let input = document.getElementById('input')
+        input.addEventListener("change", function () {
+            let file = this.files[0]
+            console.log("压缩前：", file);
+            let fileReader = new FileReader()
+            fileReader.readAsDataURL(file)
+            fileReader.onload = function (e) {
+                const img = new Image()
+                const quality = 0.7
+                const canvas = document.createElement("canvas")
+                const ctx = canvas.getContext("2d")
+                img.src = this.result
+
+                // 图片预览
+                let picDom = document.getElementById("img")
+                picDom.src = window.URL.createObjectURL(file);
+
+                img.onload = function () {
+                    canvas.height = 300
+                    canvas.width = 400
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+                    ctx.font = "24px 黑体"
+                    ctx.fillStyle = "#ffffff"
+                    // 设置右对齐
+                    ctx.textAlign = 'right'
+                    // 在指定位置绘制文字，这里指定距离右下角20坐标的地方
+                    ctx.fillText('2023-03-20', canvas.width - 20, canvas.height - 20)
+                    let imgData = canvas.toDataURL('image/png', 0.2)
+                    let resultFile = dataURLtoFile(imgData, file.name)
+                    let cav = document.getElementById("canvas")
+                    cav.appendChild(canvas)
+                    console.log("压缩后：", resultFile);
+                }
+            }
+        })
+
+        // 转换base64为文件流
+        function dataURLtoFile(dataurl, filename) {
+            var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, { type: mime });
+        }
+    </script>
+</body>
+
+</html>
