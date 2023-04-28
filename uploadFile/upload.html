@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上传文件的插件</title>
+    <style>
+        .file_uploader {
+            min-height: 160px;
+            padding: 10px;
+        }
+
+        .file_upload {
+            display: inline-block;
+            margin: 10px 0 0;
+            width: 100%;
+            position: relative;
+        }
+
+        .upload_button {
+            position: absolute;
+        }
+
+        .upload_button>.button {
+            background: #298ccf;
+            color: #fff;
+            text-align: center;
+            border-radius: 12px;
+            height: 27px;
+            float: left;
+            width: 110px;
+            border: none;
+            margin-right: 5px;
+        }
+
+        .file_input {
+            opacity: 0;
+        }
+
+        #cav {
+            text-align: center;
+            padding: 50px 10px 10px;
+        }
+
+        #cav img {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+
+        #cav video {
+            width: 100%;
+            max-height: 210px;
+            margin: 10px 0;
+            border: 1px solid #bdbdbd;
+        }
+
+        #cav audio {
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #bdbdbd;
+        }
+
+        .media {
+            position: relative;
+        }
+
+        .media .del_img {
+            content: '×';
+            position: absolute;
+            background-color: red;
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            right: -8px;
+            top: 0;
+            border-radius: 50%;
+            line-height: 15px;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="file_uploader">
+        <label class="file_upload" for="input">
+            <div class="upload_button"><button class="button">点击上传</button><span>支持图片、mp3、mp4格式</span></div>
+            <input class="file_input" type="file" accept="image/*, .mp3, .mp4" multiple id="input" />
+        </label>
+        <div id="cav"></div>
+    </div>
+</body>
+<script>
+    let input = document.getElementById('input')
+    let cav = document.getElementById('cav')
+    let suffix = `(jpg|JPG|png|PNG|jpeg|JPEG|svg|SVG|gif|GIF|ico|ICO|mp3|MP3|mp4|MP4)`
+
+    var fileList = []
+
+    let regular = new RegExp(`.*\.${suffix}`)
+    input.addEventListener("change", async function () {
+        for (let i = 0; i < this.files.length; i++) {
+            // 条件判断，是否是允许接收的文件类型
+            if (regular.test(this.files[i].name)) {
+                if (/mp3/.test(this.files[i].name) || /MP3/.test(this.files[i].name)) {
+                    uploadFile(this.files[i])
+                } else if (/mp4/.test(this.files[i].name) || /MP3/.test(this.files[i].name)) {
+                    uploadFile(this.files[i])
+                } else {
+                    zipImg(this.files[i])
+                }
+            } else {
+                console.log('只支持上传图片、MP3、MP4文件');
+            }
+        }
+    });
+
+    function zipImg(file) {
+        let fileReader = new FileReader()
+        fileReader.readAsDataURL(file)
+        fileReader.onload = function (e) {
+            const img = new Image()
+            const quality = 0.8
+            const canvas = document.createElement("canvas")
+            const ctx = canvas.getContext("2d")
+            img.src = this.result
+
+            // 图片预览
+            // let picDom = document.getElementById("img")
+            // picDom.src = window.URL.createObjectURL(file);
+
+            img.onload = function () {
+                canvas.height = 300
+                canvas.width = 400
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+
+                let imgData = canvas.toDataURL('image/png', quality)
+                let resultFile = dataURLtoFile(imgData, file.name)
+                // let picDom = document.getElementById("cav")
+                var image = document.createElement('img')
+                image.src = window.URL.createObjectURL(resultFile);
+                // cav.appendChild(image)
+                uploadFile(resultFile)
+            }
+        }
+    };
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, { type: mime });
+    };
+
+    // 上传文件
+    function uploadFile(file, url) {
+        console.log(file);
+        var formData = new FormData()
+        formData.append("file", file)
+        formData.append("imgPath", 6)
+        var mediaBox = document.createElement('div')
+        mediaBox.setAttribute('class', 'media')
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                console.log(res);
+                let type = res.files[0].fileType
+                let url = res.files[0].url
+
+                fileList.push(url) // 保存文件上传成功返回的url列表
+
+                if (type == ".mp3") {
+                    let span = document.createElement('span')
+                    span.setAttribute('class', 'del_img')
+                    span.innerText = '×'
+                    mediaBox.appendChild(span)
+                    let audio = new Audio()
+                    audio.src = url
+                    audio.controls = true
+                    mediaBox.appendChild(audio)
+                    span.addEventListener("click", function (e) {
+                        // 在这里编写按钮点击事件的处理程序，fileList为全局变量保存上传成功文件的url
+                        if (fileList.indexOf(e.target.nextSibling.currentSrc) != -1) {
+                            let index = fileList.indexOf(e.target.nextSibling.currentSrc)
+                            fileList.splice(index, 1) // 从文件列表中删除需要移除节点的媒体url
+                            $(e.target.offsetParent).remove() // 移除点击的节点，与后面相同
+                        }
+                    });
+                    cav.appendChild(mediaBox)
+                } else if (type == ".mp4") {
+                    let span = document.createElement('span')
+                    span.setAttribute('class', 'del_img')
+                    span.innerText = '×'
+                    mediaBox.appendChild(span)
+                    let video = document.createElement('video')
+                    video.src = url
+                    video.controls = true
+                    mediaBox.appendChild(video)
+                    span.addEventListener("click", function (e) {
+                        // 在这里编写按钮点击事件的处理程序，fileList为全局变量保存上传成功文件的url
+                        if (fileList.indexOf(e.target.nextSibling.currentSrc) != -1) {
+                            let index = fileList.indexOf(e.target.nextSibling.currentSrc)
+                            fileList.splice(index, 1) // 从文件列表中删除需要移除节点的媒体url
+                            $(e.target.offsetParent).remove() // 移除点击的节点，与后面相同
+                        }
+                    });
+                    cav.appendChild(mediaBox)
+                } else {
+                    let span = document.createElement('span')
+                    span.setAttribute('class', 'del_img')
+                    span.innerText = '×'
+                    mediaBox.appendChild(span)
+                    let img = document.createElement('img')
+                    img.src = url
+                    mediaBox.appendChild(img)
+                    // 为按钮添加点击事件
+                    span.addEventListener("click", function (e) {
+                        // 在这里编写按钮点击事件的处理程序，fileList为全局变量保存上传成功文件的url
+                        if (fileList.indexOf(e.target.nextSibling.currentSrc) != -1) {
+                            let index = fileList.indexOf(e.target.nextSibling.currentSrc)
+                            fileList.splice(index, 1) // 从文件列表中删除需要移除节点的媒体url
+                            $(e.target.offsetParent).remove() // 移除点击的节点，与后面相同
+                        }
+                    });
+                    cav.appendChild(mediaBox)
+                }
+            }
+        })
+    };
+
+</script>
+
+</html>
