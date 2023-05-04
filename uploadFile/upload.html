@@ -65,6 +65,9 @@
 
         .media {
             position: relative;
+            width: 30%;
+            transition: 1s;
+            /* 控制操作时的动画时间 */
         }
 
         .media .del_img {
@@ -190,9 +193,13 @@
                     span.addEventListener("click", function (e) {
                         // 在这里编写按钮点击事件的处理程序，fileList为全局变量保存上传成功文件的url
                         if (fileList.indexOf(e.target.nextSibling.currentSrc) != -1) {
-                            let index = fileList.indexOf(e.target.nextSibling.currentSrc)
-                            fileList.splice(index, 1) // 从文件列表中删除需要移除节点的媒体url
-                            $(e.target.offsetParent).remove() // 移除点击的节点，与后面相同
+                            e.target.offsetParent.style.opacity = 0
+                            setTimeout(() => {
+                                console.log(e);
+                                let index = fileList.indexOf(e.target.nextSibling.currentSrc)
+                                fileList.splice(index, 1) // 从文件列表中删除需要移除节点的媒体url
+                                e.target.offsetParent.remove()
+                            }, 1000);
                         }
                     });
                     cav.appendChild(mediaBox)
@@ -208,9 +215,16 @@
                     span.addEventListener("click", function (e) {
                         // 在这里编写按钮点击事件的处理程序，fileList为全局变量保存上传成功文件的url
                         if (fileList.indexOf(e.target.nextSibling.currentSrc) != -1) {
-                            let index = fileList.indexOf(e.target.nextSibling.currentSrc)
-                            fileList.splice(index, 1) // 从文件列表中删除需要移除节点的媒体url
-                            $(e.target.offsetParent).remove() // 移除点击的节点，与后面相同
+                            e.target.offsetParent.style.opacity = 0
+                            setTimeout(() => {
+                                console.log(e);
+                                let index = fileList.indexOf(e.target.nextSibling.currentSrc)
+                                fileList.splice(index, 1) // 从文件列表中删除需要移除节点的媒体url
+                                e.target.offsetParent.remove()
+                            }, 1000);
+                            // let index = fileList.indexOf(e.target.nextSibling.currentSrc)
+                            // fileList.splice(index, 1) // 从文件列表中删除需要移除节点的媒体url
+                            // $(e.target.offsetParent).remove() // 移除点击的节点，与后面相同
                         }
                     });
                     cav.appendChild(mediaBox)
@@ -226,9 +240,13 @@
                     span.addEventListener("click", function (e) {
                         // 在这里编写按钮点击事件的处理程序，fileList为全局变量保存上传成功文件的url
                         if (fileList.indexOf(e.target.nextSibling.currentSrc) != -1) {
-                            let index = fileList.indexOf(e.target.nextSibling.currentSrc)
-                            fileList.splice(index, 1) // 从文件列表中删除需要移除节点的媒体url
-                            $(e.target.offsetParent).remove() // 移除点击的节点，与后面相同
+                            e.target.offsetParent.style.opacity = 0
+                            setTimeout(() => {
+                                console.log(e);
+                                let index = fileList.indexOf(e.target.nextSibling.currentSrc)
+                                fileList.splice(index, 1) // 从文件列表中删除需要移除节点的媒体url
+                                e.target.offsetParent.remove()
+                            }, 1000);
                         }
                     });
                     cav.appendChild(mediaBox)

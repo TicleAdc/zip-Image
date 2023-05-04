@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>点击删除节点的动画</title>
+    <style>
+        #box {
+            text-align: center;
+            padding: 50px 10px 10px;
+        }
+
+        .media {
+            position: relative;
+            width: 30%;
+            transition: 1s;
+        }
+
+        .media .del_img {
+            content: '×';
+            position: absolute;
+            background-color: red;
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            right: -8px;
+            top: -8px;
+            border-radius: 50%;
+            line-height: 15px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 15;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        video {
+            width: 100%;
+            max-height: 210px;
+            border: 1px solid #dedede;
+        }
+
+        audio {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box" id="box">
+        <div class="media">
+            <span id="del" class="del_img">×</span>
+            <!-- <img src="./imgae/微信图片_20230425110946.jpg" alt=""> -->
+            <video src="./imgae/2215290413.mp4" controls></video>
+        </div>
+    </div>
+</body>
+<script>
+    var del = document.getElementById('del')
+    var box = document.getElementById('box')
+
+    del.addEventListener('click', function (e) {
+        event.stopPropagation()
+        e.target.offsetParent.style.opacity = 0
+        setTimeout(() => {
+            console.log(e);
+            e.target.offsetParent.remove()
+        }, 1000);
+    })
+
+    // del.onclick = function () {
+    //     console.log(this);
+    //     box.style.opacity = 0
+    //     event.stopPropagation()
+    // }
+</script>
+
+</html>
