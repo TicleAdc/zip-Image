@@ -9,6 +9,7 @@
 
 #uploadFile
 上传文件的插件，包含媒体文件上传，图片压缩，回显，删除等功能
+del_element 删除节点时的淡出效果动画，已插入到upload.html中，具体效果待测试
 
 #zipImg
 图片压缩相关js代码
