@@ -1,6 +1,11 @@
 # plugins
 #一些前端会用到的js方法和封装好的原生js插件
 
+#animation 一些css动画效果
+
+#JavaScript 一些HTML页面上能用到的js方法
+#目前更新 防抖 节流
+
 #deviteAddress
 以省，市，区，乡，社区拆分地址字符串
 
@@ -13,3 +18,4 @@ del_element 删除节点时的淡出效果动画，已插入到upload.html中，
 
 #zipImg
 图片压缩相关js代码
+
