@@ -1,17 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>一些常用的JavaScript方法</title>
 </head>
+
 <body>
     <!-- 防抖 -->
     <!-- 此处输入文字：<input type="text" id="input"> -->
 
     <!-- 节流 -->
     <!-- <button id="btn">click me</button> -->
+    <div>这是一串文字这是一串文字</div>
+    <script>
+        // 监控浏览器窗口是否处于后台，在切换回页面时弹出提示。可用于防作弊的答题系统
+        // var count = 0
+        // document.addEventListener("visibilitychange", function () {
+        //     var string = document.visibilityState
+        //     console.log(string)
+        //     if (string === 'hidden') {  // 当页面由前端运行在后端时，出发此代码
+        //         console.log('我被隐藏了')
+        //         count++
+        //         if (count < 3) {
+        //             return
+        //         } else {
+        //             window.close()
+        //         }
+        //     }
+        //     if (string === 'visible') {   // 当页面由隐藏至显示时
+        //         console.log('欢迎回来')
+        //         alert('当前切换窗口'+count+'次, 超出三次将关闭当前窗口')
+        //     }
+        // });
+
+
+        // 判断当前设备是pc还是mobile
+        const judgeDeviceType =
+            () => /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|OperaMini/i.test(navigator.userAgent) ? 'Mobile' : 'PC';
+
+        console.log(judgeDeviceType()); // PC | Mobile
+
+        // 将文字复制到剪贴板
+        const copyText = async (text) => await (navigator.clipbord.writeText(text))
+
+        // 获取选中的文本
+        const getSelectText = () =>  window.getSelection().toString()
+        console.log(getSelectText());
+
+        // console.log(copyText(getSelectText()));
+
+    </script>
 </body>
-<script src="./index.js"></script>
+<!-- <script src="./index.js"></script> -->
+
 </html>
