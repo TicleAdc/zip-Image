@@ -3,6 +3,8 @@
 
 #animation 一些css动画效果
 
+#devideArray 用于前端进行分页操作，将一维数组拆分为二维数组
+
 #JavaScript 一些HTML页面上能用到的js方法
 #目前更新 防抖 节流
 
