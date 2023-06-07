@@ -75,14 +75,24 @@
 //     throttleAxios()
 // })
 
-/**
- * 摘水果
- * @param {*} fruits 包含水果信息[position, amount]位置和数量信息
- * @param {*} startPos 起始位置
- * @param {*} k 最多可以走的步数
- * 返回你可以摘到水果的 最大总数 。
- */
-var maxTotalFruits = function (fruits, startPos, k) {
-    
-}
+
+// 监控浏览器窗口是否处于后台，在切换回页面时弹出提示。可用于防作弊的答题系统
+var count = 0
+document.addEventListener("visibilitychange", function () {
+    var string = document.visibilityState
+    console.log(string)
+    if (string === 'hidden') {  // 当页面由前端运行在后端时，出发此代码
+        console.log('我被隐藏了')
+        count++
+        if (count < 3) {
+            return
+        } else {
+            window.close()
+        }
+    }
+    if (string === 'visible') {   // 当页面由隐藏至显示时
+        console.log('欢迎回来')
+        alert('当前切换窗口'+count+'次, 超出三次将关闭当前窗口')
+    }
+});
 

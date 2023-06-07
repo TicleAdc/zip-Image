@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>indexDB本地存储</title>
+</head>
+
+<body>
+    <div id="box">
+        <input id="input" type="text">
+        <button id="button">submit</button>
+    </div>
+
+    <!-- <script>
+        var request = window.indexedDB.open('test', 1) // 'test'=databaseName 1=version
+
+        /**
+         * 数据仓库打开失败
+        */
+        request.onerror = function (error) {
+            console.log('indexedDB 打开失败', error)
+        }
+
+        /**
+         * 数据仓库打开成功
+        */
+        var store
+        request.onsuccess = async function (res) {
+            console.log('indexedDB 打开成功', res);
+            db = res.target.result
+            store = db.transaction(['test'], 'readwrite').objectStore('test')
+            /**
+        * add方法添加数据
+        * params 需要添加的数据信息
+       */
+            var request1 = store.add({
+                id: new Date().getTime(),
+                name: '李四',
+            })
+
+            /**
+             * 数据添加成功
+            */
+            request1.onsuccess = function (event) {
+                console.log('数据添加成功', event);
+            }
+
+            /**
+             * 数据添加失败
+            */
+            request1.onerror = function (event) {
+                console.log('数据添加失败', event)
+            }
+        }
+
+        /**
+         * 数据仓库升级事件（第一次新建库也会触发，从无到有算是升级了一次）
+         */
+        console.log(store);
+        request.onupgradeneeded = function (res) {
+            console.log('indexedDB 升级成功', res);
+            db = res.target.result
+            db_table = db.createObjectStore('test', { keyPath: 'id' })
+            db_table.createIndex('indexName', 'name', { unique: false })
+        }
+
+        /**
+         * 新增数据操作
+         * [test]=数据仓库的数组
+         * readwrite=写入模式
+        */
+        //    var store = db.transaction(['test'], 'readwrite').objectStore('test')
+
+        /**
+         * add方法添加数据
+         * params 需要添加的数据信息
+        */
+        // var request1 = store.add({
+        //     id: new Date().getTime(),
+        //     name: '张三',
+        //     age: 22,
+        //     email: '123123123@123.com',
+        //     remarks: ''
+        // })
+
+        // /**
+        //  * 数据添加成功
+        // */
+        // request1.onsuccess = function (event) {
+        //     console.log('数据添加成功', event);
+        // }
+
+        // /**
+        //  * 数据添加失败
+        // */
+        // request1.onerror = function (event) {
+        //     console.log('数据添加失败', event)
+        // }
+    </script> -->
+    <script>
+        document.getElementById('button').addEventListener('click', function addData() {
+            var input = document.getElementById('input')
+            console.log(input.value);
+
+            // 打开数据仓库
+            var request = window.indexedDB.open('test', 1)
+
+            /**
+             * 数据仓库打开失败
+            */
+            request.onerror = function (error) {
+                console.log('indexedDB 打开失败', error)
+            }
+
+            request.onsuccess = function (res) {
+                console.log('indexedDB 打开成功', res)
+                let db = res.target.result
+                let store = db.transaction(['test'], 'readwrite').objectStore('test');
+
+                store.add({
+                    id: new Date().getTime(),
+                    name: input.value,
+                    text: input.value
+                })
+            }
+        })
+    </script>
+</body>
+
+</html>
