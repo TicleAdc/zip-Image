@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        body {
+            background: #888;
+        }
+
+        .container {
+            margin: 0 auto;
+            width: 800px;
+            height: 500px;
+            background: #fff;
+            position: relative;
+            margin-top: 100px;
+        }
+
+        .leftReelWrapper {
+            position: absolute;
+            left: 50px;
+            top: 50%;
+            margin-top: -180px;
+        }
+
+        /*右轴定位*/
+        .rightReelWrapper {
+            position: absolute;
+            left: 76px;
+            top: 50%;
+            margin-top: -180px;
+        }
+
+        /*添加类名 .rightReel*/
+        .leftTopReel,
+        .rightReel {
+            width: 20px;
+            height: 300px;
+            margin-left: 3px;
+            background: linear-gradient(90deg, #884433, #FBBC62, #CC5F3D);
+        }
+
+        /*添加类名 .rightTopHandle .rightBottomHandle*/
+        .leftTopHandle,
+        .leftBottomHandle,
+        .rightTopHandle,
+        .rightBottomHandle {
+            width: 20px;
+            height: 24px;
+            margin-left: 3px;
+            background: linear-gradient(90deg, #411C1D, #832C29, #411C1D);
+        }
+
+        /*轴上柄的末端小边*/
+        /*添加类名 .rightTopHandleBorder, .rightBottomHandleBorder*/
+        .leftTopHandleBorder,
+        .leftBottomHandleBorder,
+        .rightTopHandleBorder,
+        .rightBottomHandleBorder {
+            width: 26px;
+            height: 6px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #411C1D, #832C29, #411C1D);
+        }
+
+        @keyframes moveReel {
+            to {
+                transform: translateX(500px);
+            }
+        }
+
+        /*右轴定位*/
+        .rightReelWrapper {
+            animation: moveReel 5s linear 3s forwards;
+        }
+
+        @keyframes expandPainting {
+            to {
+                width: 468px;
+                border: 20px solid #E05717;
+            }
+        }
+
+        .content {
+            position: absolute;
+            /*这里使用border作为内容画布的边框，两轴静止的时候填充到中间细缝，没有设 background, 也方便直接在content里放图片，达到一种透视效果*/
+            border-left: 20px solid #E05717;
+            border-top: 20px solid #E05717;
+            border-bottom: 20px solid #E05717;
+            width: 6px;
+            height: 261px;
+            left: 72px;
+            top: 56%;
+            margin-top: -180px;
+            /*这里添加动画*/
+            animation: expandPainting 5s linear 3s forwards;
+            overflow: hidden;
+            background-color: #FBBC62;
+        }
+
+        .inside {
+            /* display: flex; */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="leftReelWrapper">
+            <div class="leftTopHandleBorder"></div>
+            <div class="leftTopHandle"></div>
+            <div class="leftTopReel"></div>
+            <div class="leftBottomHandle"></div>
+            <div class="leftBottomHandleBorder"></div>
+        </div>
+
+        <div class="content">
+            <!-- <img class="pic" src='./qingming_content.png' width="469px" height="261px" /> -->
+            <div class="inside">
+                <h1 style="width: 100%; white-space: nowrap; ">通知</h1>
+                <div style="height: 40px;"></div>
+                <div style="text-indent: 20px; white-space: nowrap; font-size: 24px;">今天星期五，明天不用上班，请互相转告</div>
+            </div>
+        </div>
+
+        <div class="rightReelWrapper">
+            <div class="rightTopHandleBorder"></div>
+            <div class="rightTopHandle"></div>
+            <div class="rightReel"></div>
+            <div class="rightBottomHandle"></div>
+            <div class="rightBottomHandleBorder"></div>
+        </div>
+    </div>
+</body>
+
+</html>
